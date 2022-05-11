@@ -11,7 +11,10 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { RootObject } from "./interface";
 
-const Country: React.FC<{ country: string }> = ({ country }) => {
+const Country: React.FC<{
+  country: string;
+  handleCapital(x: string): void;
+}> = ({ country, handleCapital }) => {
   const [countryData, setCountryData] = useState<RootObject>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -21,10 +24,8 @@ const Country: React.FC<{ country: string }> = ({ country }) => {
     axios.get<RootObject>(url).then((response) => {
       console.log(response.data);
       setCountryData(response.data);
-
+      handleCapital(countryData?.[0].capital);
       setIsLoading(false);
-      console.log(typeof countryData);
-      console.log("abc", countryData?.[0]);
     });
   }
 
