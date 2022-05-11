@@ -6,7 +6,7 @@ import Search from "./components/Search";
 function App() {
   const [country, setCountry] = useState<string>("");
 
-  const handleCountry = (x: string) => {
+  const handleCountry = (x: string): void => {
     setCountry(x);
   };
 
@@ -15,7 +15,7 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<Search handleCountry={handleCountry} />} />
-          <Route path="/country" element={<Country />} />
+          <Route path="/country" element={<Country country={country} />} />
         </Routes>
       </div>
     </BrowserRouter>

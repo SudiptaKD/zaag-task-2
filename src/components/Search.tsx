@@ -3,14 +3,22 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function Search({ handleCountry }) {
+interface FuncProps {
+  handleCountry(x: string): void;
+}
+
+const Search: React.FC<FuncProps> = ({ handleCountry }) => {
   const [country, setCountry] = useState<string>("");
+
+  const navigate = useNavigate();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     handleCountry(country);
     setCountry("");
+    navigate("/country");
   };
 
   return (
@@ -48,4 +56,6 @@ export default function Search({ handleCountry }) {
       </Box>
     </Container>
   );
-}
+};
+
+export default Search;

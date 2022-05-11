@@ -6,10 +6,32 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { RootObject } from "./interface";
 
-export default function Country() {
-  const url = "https://restcountries.com/v3.1/name/{{}}";
+const Country: React.FC<{ country: string }> = ({ country }) => {
+  const [countryData, setCountryData] = useState<RootObject>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  let url = `https://restcountries.com/v3.1/name/{{${country}}}`;
+
+  async function fetchCountry() {
+    axios.get<RootObject>(url).then((response) => {
+      console.log(response.data);
+      setCountryData(response.data);
+
+      setIsLoading(false);
+      console.log(typeof countryData);
+      console.log("abc", countryData?.[0]);
+    });
+  }
+
+  useEffect(() => {
+    fetchCountry();
+  }, [isLoading]);
+
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -20,26 +42,35 @@ export default function Country() {
           alignItems: "center",
         }}
       >
-        <Card sx={{ maxWidth: 345 }}>
-          <CardMedia
-            component="img"
-            alt="green iguana"
-            height="140"
-            image="/static/images/cards/contemplative-reptile.jpg"
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              Lizard
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Lizards
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Button size="small">Learn More</Button>
-          </CardActions>
-        </Card>
+        {!isLoading && (
+          <Card sx={{ maxWidth: 345 }}>
+            <CardMedia
+              component="img"
+              alt="green iguana"
+              height="140"
+              image={countryData?.[0].flags.svg}
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div">
+                Capital : {countryData?.[0].capital}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Population : {countryData?.[0].population}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Latitude : {countryData?.[0].latlng[0]} Longitude :{" "}
+                {countryData?.[0].latlng[1]}
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Link to="/capital-weather" style={{ textDecoration: "none" }}>
+                <Button size="small">Capital Weather</Button>
+              </Link>
+            </CardActions>
+          </Card>
+        )}
       </Box>
     </Container>
   );
-}
+};
+export default Country;
