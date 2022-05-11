@@ -31,6 +31,7 @@ const Capital: React.FC<{ capital: string }> = ({ capital }) => {
 
   useEffect(() => {
     fetchCountry();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
   return (
