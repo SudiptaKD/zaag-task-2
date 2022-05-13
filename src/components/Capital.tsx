@@ -16,7 +16,7 @@ const Capital: React.FC<{ capital: string }> = ({ capital }) => {
   //     access_key: api_key,
   //     query: capital,
   //   };
-  let url = `http://api.weatherstack.com/current?access_key=${api_key}&query={{${capital}}}`;
+  let url = `/api.weatherstack.com/current?access_key=${api_key}&query={{${capital}}}`;
 
   async function fetchCountry() {
     axios.get<RootObject>(url).then((response) => {
